@@ -6,10 +6,12 @@ services:
     container_name: ubuntu
     restart: always
     security_opt:
-      - no-new-privileges:true
+      - "no-new-privileges:true"
     environment:
       - TZ=Europe/London
-    command: tail -f /dev/null
+    tty: true
+    networks:
+      - my-net
 
   nginx:
     image: nginx:latest
@@ -19,16 +21,23 @@ services:
       - "80:80"
       - "443:443"
     security_opt:
-      - no-new-privileges:true
+      - "no-new-privileges:true"
     environment:
       - TZ=Europe/London
+    networks:
+      - my-net
 
   windows:
     image: mcr.microsoft.com/windows/servercore:ltsc2019
     container_name: windows
     restart: always
     security_opt:
-      - no-new-privileges:true
+      - "no-new-privileges:true"
     environment:
       - TZ=Europe/London
     command: ping -t localhost
+    networks:
+      - my-net
+
+networks:
+  my-net:
